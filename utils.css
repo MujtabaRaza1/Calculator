@@ -1,0 +1,27 @@
+.text-center{
+    text-align: center;
+}
+
+.bg-red{
+
+}
+
+.m-w-20{
+    max-width: 20%;
+    text-align: center;
+    margin: 0 auto;
+    border: 2px solid black;
+    margin-bottom: 20px!important;
+
+}
+
+.flex{
+    text-align: center;
+    align-items: center;
+}
+
+.row{
+    text-align: center;
+    align-items: center;
+    width: 100%;
+}

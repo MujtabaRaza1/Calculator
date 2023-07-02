@@ -34,3 +34,7 @@ html, body{
     margin-top: 20px;
 
 }
+
+.error {
+    outline: 2px solid red;
+  }

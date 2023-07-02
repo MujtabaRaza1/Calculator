@@ -1,55 +1,98 @@
-let string ="";
+let string = "";
+let inputField = document.querySelector('input');
 let buttons = document.querySelectorAll('.button1');
-Array.from(buttons).forEach((button1)=>{
-    button1.addEventListener('click', (e) => {
-        if (e.target.innerHTML == '=') {
-          try {
-            // Configure math.js to use the Fraction data type
-            const config = {
-              number: 'Fraction',
-              fraction: 'Fraction'
-            };
-            const mathWithFractions = math.create(config);
-      
-            // Evaluate the expression using math.js with fractions
-            let result = mathWithFractions.evaluate(string);
-            console.log(result);
-      
-            // Convert the result to a string
-            result = result.toString();
-      
-            // Update the input field with the result
-            document.querySelector('input').value = result;
-          } catch (error) {
-            // Handle any errors that may occur during evaluation
-            console.log("Error: " + error.message);
-          }
-        } else if (e.target.innerHTML == 'C') {
-          // Clear the string and the input field
-          string = "";
-          document.querySelector('input').value = string;
+
+function add() {
+  let operands = string.split('+');
+  console.log(operands);  
+  let result = parseFloat(operands[0]);
+  for (let i = 1; i < operands.length; i++) {
+    result += parseFloat(operands[i]);
+  }
+  console.log(result);
+  return result;
+  
+}
+
+function subtract() {
+  let operands = string.split('-');
+  let result = parseFloat(operands[0]);
+  for (let i = 1; i < operands.length; i++) {
+    result -= parseFloat(operands[i]);
+  }
+  return result;
+}
+
+function multiply() {
+  let operands = string.split('*');
+  let result = parseFloat(operands[0]);
+  for (let i = 1; i < operands.length; i++) {
+    result *= parseFloat(operands[i]);
+  }
+  return result;
+}
+
+function divide() {
+  let operands = string.split('/');
+  let result = parseFloat(operands[0]);
+  for (let i = 1; i < operands.length; i++) {
+    const operand = parseFloat(operands[i]);
+    if (operand === 0) {
+      window.alert('Cant divide by Zero.');
+    }
+    result /= operand;
+  }
+  return result;
+}
+
+function resetInputField() {
+  inputField.classList.remove('error');
+}
+
+function displayError(errorMessage) {
+  inputField.classList.add('error');
+  inputField.value = window.alert(errorMessage);
+}
+
+Array.from(buttons).forEach((button1) => {
+  button1.addEventListener('click', (e) => {
+    let input = e.target.innerHTML;
+    
+    if (input === '=') {
+      let result;
+      try {
+        if (string === '') {
+          result = 0;
+        } else if (string.includes('+')) {
+          result = add();
+        } else if (string.includes('-')) {
+          result = subtract();
+        } else if (string.includes('*')) {
+          result = multiply();
+        } else if (string.includes('/')) {
+          result = divide();
         } else {
-          // Append the clicked button's value to the string
-          string = string + e.target.innerHTML;
-          document.querySelector('input').value = string;
+          string= "";
         }
-      })
-
-
-
-    // button1.addEventListener('click', (e)=>{
-    //     if (e.target.innerHTML == '=') {
-    //         string = eval(string);
-    //         document.querySelector('input').value = string;
-    //     }
-    //     else if (e.target.innerHTML == 'C') {
-    //         string = "";
-    //         document.querySelector('input').value = string;
-    //     }
-    //     else{
-    //         string = string + e.target.innerHTML;
-    //         document.querySelector('input').value = string;
-    //     }
-        
-    // })
-})
+        if (!Number.isFinite(result)) {
+         result = "";
+         string = result;
+        }
+        inputField.classList.remove('error');
+        inputField.value = result;
+        string = result.toString();
+      } catch (error) {
+        displayError(error.message);
+        string = "";
+      }
+    } else if (input === 'C') {
+      string = "";
+      inputField.classList.remove('error');
+      inputField.value = "";
+    } else {
+      resetInputField();
+      string += input;
+      inputField.value = string;
+    }
+  });
+});
